@@ -707,26 +707,20 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-      font-size: 9.5px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      color: var(--primary-gold);
+      font-size: 16px;
     }
 
     .dest-pin {
-      width: 46px;
-      height: 26px;
+      width: 36px;
+      height: 36px;
       background: var(--pure-white);
       border: 2px solid var(--charcoal);
-      border-radius: 14px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      font-size: 9.5px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      color: var(--charcoal);
+      font-size: 16px;
     }
 
     /* Banner simulation alert (Clean & Professional) */
@@ -947,13 +941,13 @@
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     }).addTo(map);
 
-    // Custom Truck Marker (Clean Typographic Badge - No Emojis)
+    // Custom Truck Marker (Icono de Camión)
     const truckIcon = L.divIcon({
       className: 'custom-truck-icon',
       html: `
         <div class="truck-marker-wrap">
           <div class="truck-halo"></div>
-          <div class="truck-pin">TRK</div>
+          <div class="truck-pin">🚚</div>
         </div>
       `,
       iconSize: [44, 44],
@@ -965,14 +959,14 @@
       zIndexOffset: 1000
     }).addTo(map);
 
-    // Custom Destination Marker (Clean Typographic Capsule - No Emojis)
+    // Custom Destination Marker (Icono de Casa / Destino)
     const destIcon = L.divIcon({
       className: 'custom-dest-icon',
       html: `
-        <div class="dest-pin">DEST</div>
+        <div class="dest-pin">🏠</div>
       `,
-      iconSize: [46, 26],
-      iconAnchor: [23, 13]
+      iconSize: [36, 36],
+      iconAnchor: [18, 18]
     });
 
     const destMarker = L.marker([destLat, destLng], {
