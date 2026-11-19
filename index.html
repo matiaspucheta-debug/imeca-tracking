@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Live Delivery Tracking — Imeca Lumber</title>
   
-  <!-- Favicon & PWA meta -->
+  <!-- Favicon & PWA meta (Clean Executive SVG) -->
   <meta name="theme-color" content="#1C1C1C">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23FFCC29'/><text x='50' y='65' font-size='50' font-weight='800' font-family='sans-serif' text-anchor='middle' fill='%231C1C1C'>I</text></svg>">
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -46,11 +46,12 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: #E5E7EB;
       color: var(--charcoal);
-      height: 100vh;
+      height: 100dvh;
+      min-height: 100vh;
       width: 100vw;
       overflow: hidden;
       position: relative;
@@ -70,7 +71,7 @@
     /* Top Floating Header */
     .top-header {
       position: absolute;
-      top: 14px;
+      top: calc(12px + env(safe-area-inset-top, 0px));
       left: 14px;
       right: 14px;
       z-index: 1000;
@@ -133,8 +134,9 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
       color: var(--charcoal);
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-gray);
@@ -165,40 +167,86 @@
       100% { transform: scale(2.2); opacity: 0; }
     }
 
-    /* Floating Map Controls */
+    /* Modern Map Controls (Minimalist Typographic Dock - No Icons) */
     .map-controls {
       position: absolute;
       right: 14px;
-      top: 75px;
+      top: calc(66px + env(safe-area-inset-top, 0px));
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      align-items: flex-end;
+      gap: 6px;
     }
 
-    .map-btn {
-      width: 44px;
-      height: 44px;
-      background: var(--pure-white);
-      border-radius: 50%;
+    .zoom-group {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 14px;
+      border: 1px solid var(--border-gray);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .ctrl-btn-zoom {
+      width: 40px;
+      height: 38px;
+      background: transparent;
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid var(--border-gray);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
       cursor: pointer;
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 700;
       color: var(--charcoal);
-      transition: transform 0.15s, background 0.15s;
+      transition: background 0.15s, transform 0.1s;
+      user-select: none;
     }
 
-    .map-btn:hover {
+    .ctrl-btn-zoom:hover {
       background: var(--soft-gray);
     }
 
-    .map-btn:active {
-      transform: scale(0.92);
+    .ctrl-btn-zoom:active {
+      background: #E5E7EB;
+    }
+
+    .zoom-divider {
+      height: 1px;
+      background: var(--border-gray);
+      width: 100%;
+    }
+
+    .ctrl-btn-pill {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-gray);
+      border-radius: 20px;
+      padding: 7px 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: var(--charcoal);
+      transition: transform 0.15s, background 0.15s, color 0.15s;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .ctrl-btn-pill:hover {
+      background: var(--charcoal);
+      color: var(--pure-white);
+      border-color: var(--charcoal);
+    }
+
+    .ctrl-btn-pill:active {
+      transform: scale(0.94);
     }
 
     /* Bottom Sheet Container (DoorDash / Uber style) */
@@ -212,12 +260,15 @@
       border-top-left-radius: var(--radius-xl);
       border-top-right-radius: var(--radius-xl);
       box-shadow: var(--shadow-lg);
-      padding: 14px 18px 20px;
+      padding: 12px 18px 24px;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       gap: 12px;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      touch-action: pan-y;
     }
 
     /* On Desktop / Tablet (>= 768px): Sleek Floating Left Panel */
@@ -228,15 +279,13 @@
         left: 24px;
         right: auto;
         width: 395px;
-        max-height: calc(100vh - 102px);
+        max-height: calc(100dvh - 102px);
         border-radius: var(--radius-xl);
         border: 1px solid var(--border-gray);
         box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+        padding-bottom: 24px;
       }
       .sheet-handle-wrap {
-        display: none !important;
-      }
-      .mobile-only {
         display: none !important;
       }
     }
@@ -244,11 +293,13 @@
     /* On Mobile Phones (< 768px): Collapsible Sheet with Compact Mode */
     @media (max-width: 767px) {
       .bottom-sheet {
-        max-height: 85vh;
+        max-height: 86dvh;
+        padding-bottom: calc(64px + env(safe-area-inset-bottom, 24px));
       }
       .bottom-sheet.collapsed {
         max-height: 140px;
         overflow: hidden;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 12px));
       }
       .bottom-sheet.collapsed .collapsible-content {
         opacity: 0;
@@ -260,9 +311,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 3px;
+        gap: 4px;
         cursor: pointer;
-        padding-bottom: 2px;
+        padding: 4px 0 6px;
+        user-select: none;
       }
       .sheet-handle {
         width: 44px;
@@ -271,11 +323,11 @@
         border-radius: 4px;
       }
       .sheet-handle-text {
-        font-size: 10px;
-        font-weight: 700;
+        font-size: 9.5px;
+        font-weight: 800;
         color: var(--muted-text);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.6px;
       }
     }
 
@@ -284,6 +336,7 @@
       flex-direction: column;
       gap: 12px;
       transition: opacity 0.25s ease, max-height 0.35s ease;
+      touch-action: pan-y;
     }
 
     /* Hero ETA Block */
@@ -294,23 +347,24 @@
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border-gray);
       cursor: pointer;
+      user-select: none;
     }
 
     .eta-title {
-      font-size: 11px;
+      font-size: 10.5px;
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.8px;
       color: var(--muted-text);
       margin-bottom: 2px;
     }
 
     .eta-time {
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 800;
       letter-spacing: -0.8px;
       color: var(--charcoal);
-      line-height: 1.1;
+      line-height: 1.05;
     }
 
     .eta-time span {
@@ -331,16 +385,25 @@
       background: var(--primary-gold);
       color: var(--charcoal);
       font-weight: 800;
-      font-size: 13px;
-      padding: 7px 13px;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      padding: 6px 12px;
       border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       box-shadow: 0 4px 10px rgba(255, 204, 41, 0.35);
+      text-transform: uppercase;
     }
 
-    /* Delivery Progress Stepper */
+    .status-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--charcoal);
+    }
+
+    /* Delivery Progress Stepper (Minimalist Numbers & Checks) */
     .stepper-container {
       display: flex;
       align-items: center;
@@ -392,7 +455,7 @@
       align-items: center;
       justify-content: center;
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--muted-text);
       box-shadow: 0 2px 5px rgba(0,0,0,0.06);
       transition: all 0.25s;
@@ -426,7 +489,7 @@
     .driver-card {
       background: var(--soft-gray);
       border-radius: var(--radius-lg);
-      padding: 10px 12px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -436,7 +499,7 @@
     .driver-profile {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .driver-avatar {
@@ -444,12 +507,13 @@
       height: 40px;
       border-radius: 50%;
       background: var(--charcoal);
-      color: var(--pure-white);
+      color: var(--primary-gold);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
       border: 2px solid var(--primary-gold);
       flex-shrink: 0;
     }
@@ -464,75 +528,68 @@
     .driver-vehicle {
       font-size: 11px;
       color: var(--muted-text);
-      font-weight: 500;
+      font-weight: 600;
       margin-top: 2px;
     }
 
     .driver-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .action-btn-circle {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .driver-btn {
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s, background 0.15s;
+      user-select: none;
+    }
+
+    .driver-btn.call {
+      background: var(--charcoal);
+      color: var(--pure-white);
+      border: 1px solid var(--charcoal);
+    }
+
+    .driver-btn.call:hover {
+      background: var(--charcoal-light);
+    }
+
+    .driver-btn.sms {
       background: var(--pure-white);
       color: var(--charcoal);
       border: 1px solid var(--border-gray);
-      box-shadow: var(--shadow-sm);
-      text-decoration: none;
-      font-size: 15px;
-      cursor: pointer;
-      transition: transform 0.15s, background 0.15s;
     }
 
-    .action-btn-circle.call {
-      background: var(--charcoal);
-      color: var(--pure-white);
-      border: none;
+    .driver-btn.sms:hover {
+      background: var(--soft-gray);
     }
 
-    .action-btn-circle:active {
-      transform: scale(0.92);
+    .driver-btn:active {
+      transform: scale(0.93);
     }
 
-    /* Destination & Delivery Instructions Details */
+    /* Destination Details Card (Clean Minimalist - No Icons) */
     .destination-card {
       background: #FAFAFA;
       border: 1px solid var(--border-gray);
       border-radius: var(--radius-lg);
-      padding: 12px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-    }
-
-    .detail-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .detail-icon {
-      font-size: 16px;
-      margin-top: 1px;
-      color: var(--charcoal);
-    }
-
-    .detail-content {
-      flex: 1;
+      gap: 6px;
     }
 
     .detail-title {
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 9.5px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.7px;
       color: var(--muted-text);
       margin-bottom: 2px;
     }
@@ -548,20 +605,20 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 5px;
+      margin-top: 6px;
     }
 
     .meta-chip {
       background: var(--pure-white);
       border: 1px solid var(--border-gray);
-      padding: 3px 9px;
+      padding: 4px 10px;
       border-radius: 12px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       color: var(--charcoal);
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      letter-spacing: 0.2px;
     }
 
     .meta-chip.dropoff {
@@ -570,7 +627,7 @@
       color: #92400E;
     }
 
-    /* Custom Leaflet Map Markers */
+    /* Custom Leaflet Map Markers (Modern Typographic Badges - No Emojis) */
     .truck-marker-wrap {
       position: relative;
       width: 44px;
@@ -596,38 +653,46 @@
 
     .truck-pin {
       position: relative;
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       background: var(--charcoal);
-      border: 2.5px solid var(--primary-gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      font-size: 15px;
-    }
-
-    .dest-pin {
-      width: 36px;
-      height: 36px;
-      background: var(--charcoal);
-      border: 3px solid var(--pure-white);
+      border: 2px solid var(--primary-gold);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-      font-size: 16px;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: var(--primary-gold);
     }
 
-    /* Banner simulation alert */
+    .dest-pin {
+      width: 46px;
+      height: 26px;
+      background: var(--pure-white);
+      border: 2px solid var(--charcoal);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: var(--charcoal);
+    }
+
+    /* Banner simulation alert (Clean & Professional) */
     .sim-banner {
       display: none;
-      background: #FEF3C7;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
       color: #92400E;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
+      letter-spacing: 0.2px;
       padding: 6px 12px;
       border-radius: 8px;
       text-align: center;
@@ -654,14 +719,16 @@
     </div>
   </header>
 
-  <!-- Floating Map Controls -->
+  <!-- Modern Floating Map Controls (Typographic Dock - No Icons) -->
   <div class="map-controls">
-    <button class="map-btn" id="btnZoomIn" title="Zoom In">＋</button>
-    <button class="map-btn" id="btnZoomOut" title="Zoom Out">－</button>
-    <button class="map-btn" id="btnRecenter" title="Center on Truck">🎯</button>
-    <button class="map-btn" id="btnDest" title="Center on Destination">🏠</button>
-    <button class="map-btn" id="btnFitBounds" title="Fit Entire Route">⤢</button>
-    <button class="map-btn mobile-only" id="btnToggleSheet" title="Toggle Details">📋</button>
+    <div class="zoom-group">
+      <button class="ctrl-btn-zoom" id="btnZoomIn" title="Zoom in">＋</button>
+      <div class="zoom-divider"></div>
+      <button class="ctrl-btn-zoom" id="btnZoomOut" title="Zoom out">－</button>
+    </div>
+    <button class="ctrl-btn-pill" id="btnRecenter" title="Center on truck">TRUCK</button>
+    <button class="ctrl-btn-pill" id="btnDest" title="Center on destination">DEST</button>
+    <button class="ctrl-btn-pill" id="btnFitBounds" title="View full route">ROUTE</button>
   </div>
 
   <!-- Bottom Sheet / Side Panel (DoorDash / Uber style) -->
@@ -672,7 +739,7 @@
     </div>
 
     <div class="sim-banner" id="simBanner">
-      ⚡ Simulation Mode: Smooth vehicle interpolation along Florida route.
+      LIVE SIMULATION: Smooth vehicle interpolation along Florida route.
     </div>
 
     <!-- ETA & Main Status Hero -->
@@ -684,14 +751,15 @@
       </div>
       <div>
         <div class="status-badge-lg" id="statusBadgeDisplay">
-          🚚 On the way
+          <span class="status-badge-dot"></span>
+          <span id="statusBadgeText">ON THE WAY</span>
         </div>
       </div>
     </div>
 
     <!-- Collapsible Content Section -->
     <div class="collapsible-content" id="collapsibleContent">
-      <!-- Delivery Progress Stepper -->
+      <!-- Delivery Progress Stepper (Minimalist Numbers & Checks) -->
       <div class="stepper-container">
         <div class="stepper-bar-bg"></div>
         <div class="stepper-bar-fill" id="stepperFill" style="width: 66%;"></div>
@@ -705,11 +773,11 @@
           <div class="step-label">Dispatched</div>
         </div>
         <div class="step-node active" id="step3">
-          <div class="step-circle">🚚</div>
+          <div class="step-circle">3</div>
           <div class="step-label">On Way</div>
         </div>
         <div class="step-node" id="step4">
-          <div class="step-circle">📍</div>
+          <div class="step-circle">4</div>
           <div class="step-label">Delivered</div>
         </div>
       </div>
@@ -717,32 +785,30 @@
       <!-- Driver & Vehicle Profile -->
       <div class="driver-card">
         <div class="driver-profile">
-          <div class="driver-avatar" id="driverAvatar">🚚</div>
+          <div class="driver-avatar" id="driverAvatar">MP</div>
           <div>
-            <div class="driver-name" id="driverNameDisplay">Imeca Driver</div>
-            <div class="driver-vehicle" id="driverVehicleDisplay">White Truck • Delivery Fleet</div>
+            <div class="driver-name" id="driverNameDisplay">Matias Pucheta (Delivery)</div>
+            <div class="driver-vehicle" id="driverVehicleDisplay">Truck #4 • Imeca Fleet</div>
           </div>
         </div>
         <div class="driver-actions">
-          <a href="tel:5618484343" class="action-btn-circle call" id="btnCallDriver" title="Call Driver">📞</a>
-          <a href="sms:5618484343" class="action-btn-circle" id="btnSmsDriver" title="Text Driver">💬</a>
+          <a href="tel:5618484343" class="driver-btn call" id="btnCallDriver">CALL</a>
+          <a href="sms:5618484343" class="driver-btn sms" id="btnSmsDriver">SMS</a>
         </div>
       </div>
 
-      <!-- Destination & Dropoff Notes -->
+      <!-- Destination & Dropoff Notes (No Icons) -->
       <div class="destination-card">
-        <div class="detail-row">
-          <div class="detail-icon">📍</div>
-          <div class="detail-content">
-            <div class="detail-title">Delivery Address</div>
-            <div class="detail-text" id="destAddressDisplay">951 W 13th St, Riviera Beach, FL 33404</div>
-            <div class="chips-row" id="chipsRow">
-              <span class="meta-chip dropoff" id="chipDropoff">📦 Leave at my door</span>
-              <span class="meta-chip" id="chipPackages">📦 1 package</span>
-            </div>
-          </div>
+        <div class="detail-title">DELIVERY ADDRESS</div>
+        <div class="detail-text" id="destAddressDisplay">951 W 13th St, Riviera Beach, FL 33404</div>
+        <div class="chips-row" id="chipsRow">
+          <span class="meta-chip dropoff" id="chipDropoff">Leave at my door</span>
+          <span class="meta-chip" id="chipPackages">1 package</span>
         </div>
       </div>
+
+      <!-- Dedicated Bottom Spacer so Mobile Nav Bar Never Cuts Off Content -->
+      <div class="bottom-spacer" style="height: 54px; flex-shrink: 0;"></div>
     </div>
 
   </div>
@@ -765,6 +831,17 @@
     const gateCode = urlParams.get('gate') || '';
     const initialStatus = (urlParams.get('status') || 'onroute').toLowerCase();
 
+    // Helper: Compute clean initials for driver avatar
+    function getInitials(name) {
+      if (!name) return 'DR';
+      const clean = name.replace(/\(.*?\)/g, '').trim();
+      const parts = clean.split(/\s+/).filter(Boolean);
+      if (parts.length >= 2) {
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      }
+      return clean.substring(0, 2).toUpperCase();
+    }
+
     // Destination Coords (Default to West Palm Beach / Riviera Beach FL area)
     const destLat = parseFloat(urlParams.get('destLat')) || 26.7795;
     const destLng = parseFloat(urlParams.get('destLng')) || -80.0658;
@@ -773,26 +850,27 @@
     let truckLat = parseFloat(urlParams.get('truckLat')) || (destLat - 0.026);
     let truckLng = parseFloat(urlParams.get('truckLng')) || (destLng - 0.022);
 
-    // --- 2. Populate DOM with Data ---
+    // --- 2. Populate DOM with Data (Icon-free, clean typography) ---
     document.getElementById('headerOrderBadge').innerText = '#' + orderId;
     document.getElementById('destAddressDisplay').innerText = destAddress;
     document.getElementById('driverNameDisplay').innerText = driverName;
     document.getElementById('driverVehicleDisplay').innerText = truckNumber + ' • Imeca Fleet';
+    document.getElementById('driverAvatar').innerText = getInitials(driverName);
     document.getElementById('btnCallDriver').href = 'tel:' + driverPhone;
     document.getElementById('btnSmsDriver').href = 'sms:' + driverPhone;
-    document.getElementById('chipPackages').innerText = `📦 ${packagesCount} pkg${packagesCount > 1 ? 's' : ''}`;
-    document.getElementById('chipDropoff').innerText = `🚪 ${dropoffType}`;
+    document.getElementById('chipPackages').innerText = `${packagesCount} pkg${packagesCount > 1 ? 's' : ''}`;
+    document.getElementById('chipDropoff').innerText = dropoffType;
 
     if (unitApt) {
       const chip = document.createElement('span');
       chip.className = 'meta-chip';
-      chip.innerText = `🏢 Apt/Unit ${unitApt}`;
+      chip.innerText = `Apt/Unit ${unitApt}`;
       document.getElementById('chipsRow').appendChild(chip);
     }
     if (gateCode) {
       const chip = document.createElement('span');
       chip.className = 'meta-chip';
-      chip.innerText = `🔑 Gate: ${gateCode}`;
+      chip.innerText = `Gate Code: ${gateCode}`;
       document.getElementById('chipsRow').appendChild(chip);
     }
 
@@ -816,13 +894,13 @@
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     }).addTo(map);
 
-    // Custom Truck Marker
+    // Custom Truck Marker (Clean Typographic Badge - No Emojis)
     const truckIcon = L.divIcon({
       className: 'custom-truck-icon',
       html: `
         <div class="truck-marker-wrap">
           <div class="truck-halo"></div>
-          <div class="truck-pin">🚚</div>
+          <div class="truck-pin">TRK</div>
         </div>
       `,
       iconSize: [44, 44],
@@ -834,14 +912,14 @@
       zIndexOffset: 1000
     }).addTo(map);
 
-    // Custom Destination Marker
+    // Custom Destination Marker (Clean Typographic Capsule - No Emojis)
     const destIcon = L.divIcon({
       className: 'custom-dest-icon',
       html: `
-        <div class="dest-pin">🏠</div>
+        <div class="dest-pin">DEST</div>
       `,
-      iconSize: [36, 36],
-      iconAnchor: [18, 18]
+      iconSize: [46, 26],
+      iconAnchor: [23, 13]
     });
 
     const destMarker = L.marker([destLat, destLng], {
@@ -905,7 +983,7 @@
         lineJoin: 'round'
       }).addTo(map);
 
-      // Main Road Polyline (Charcoal with dashed animation)
+      // Main Road Polyline
       routePolyline = L.polyline(coords, {
         color: '#1C1C1C',
         weight: 5.5,
@@ -930,17 +1008,19 @@
 
     function updateStepper(mins, miles) {
       const fill = document.getElementById('stepperFill');
+      const badgeText = document.getElementById('statusBadgeText');
       const badge = document.getElementById('statusBadgeDisplay');
 
       if (mins <= 3 || miles <= 0.4) {
         fill.style.width = '85%';
-        badge.innerHTML = '⏱️ Arriving soon';
+        badgeText.innerText = 'ARRIVING SOON';
         badge.style.background = '#FFCC29';
         document.getElementById('step3').classList.add('completed');
+        document.getElementById('step3').querySelector('.step-circle').innerText = '✓';
         document.getElementById('headerStatusText').innerText = 'ARRIVING NOW';
       } else {
         fill.style.width = '60%';
-        badge.innerHTML = '🚚 On the way';
+        badgeText.innerText = 'ON THE WAY';
         document.getElementById('headerStatusText').innerText = 'EN ROUTE';
       }
     }
@@ -961,7 +1041,6 @@
     const bottomSheet = document.getElementById('bottomSheet');
     const sheetHandleWrap = document.getElementById('sheetHandleWrap');
     const etaHero = document.getElementById('etaHero');
-    const btnToggleSheet = document.getElementById('btnToggleSheet');
 
     function toggleSheet() {
       if (window.innerWidth >= 768) return; // Desktop is always floating side panel
@@ -975,7 +1054,6 @@
 
     if (sheetHandleWrap) sheetHandleWrap.addEventListener('click', toggleSheet);
     if (etaHero) etaHero.addEventListener('click', toggleSheet);
-    if (btnToggleSheet) btnToggleSheet.addEventListener('click', toggleSheet);
 
     // Initial state on mobile: collapsed so the map gets 80%+ of screen area
     if (window.innerWidth < 768) {
@@ -1011,11 +1089,15 @@
           updateStepper(remainingMins, remainingMiles);
 
           if (currentStepIndex === coords.length - 1) {
-            document.getElementById('statusBadgeDisplay').innerHTML = '✅ Arrived';
-            document.getElementById('statusBadgeDisplay').style.background = '#10B981';
-            document.getElementById('statusBadgeDisplay').style.color = '#FFFFFF';
+            const badge = document.getElementById('statusBadgeDisplay');
+            const badgeText = document.getElementById('statusBadgeText');
+            badgeText.innerText = 'DELIVERED';
+            badge.style.background = '#10B981';
+            badge.style.color = '#FFFFFF';
             document.getElementById('stepperFill').style.width = '100%';
-            document.getElementById('step4').classList.add('completed', 'active');
+            const step4 = document.getElementById('step4');
+            step4.classList.add('completed', 'active');
+            step4.querySelector('.step-circle').innerText = '✓';
             document.getElementById('headerStatusText').innerText = 'DELIVERED';
           }
         }
