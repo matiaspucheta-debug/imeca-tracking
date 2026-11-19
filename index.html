@@ -221,32 +221,77 @@
       width: 100%;
     }
 
-    .ctrl-btn-pill {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--border-gray);
+    .ctrl-actions-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .ctrl-btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
       border-radius: 20px;
-      padding: 7px 12px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      font-size: 10px;
+      padding: 7px 14px;
+      font-size: 11px;
       font-weight: 800;
-      letter-spacing: 0.6px;
-      color: var(--charcoal);
-      transition: transform 0.15s, background 0.15s, color 0.15s;
+      letter-spacing: 0.8px;
+      cursor: pointer;
       white-space: nowrap;
       user-select: none;
+      transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
     }
 
-    .ctrl-btn-pill:hover {
-      background: var(--charcoal);
-      color: var(--pure-white);
-      border-color: var(--charcoal);
+    .ctrl-btn-action:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
     }
 
-    .ctrl-btn-pill:active {
-      transform: scale(0.94);
+    .ctrl-btn-action:active {
+      transform: scale(0.93);
+    }
+
+    /* 1. TRUCK: Imeca Gold */
+    .ctrl-btn-action.btn-truck {
+      background: linear-gradient(135deg, #FFD54F 0%, #FFCC29 100%);
+      color: #1C1C1C;
+      border: 1.5px solid #E5B51E;
+      box-shadow: 0 4px 14px rgba(255, 204, 41, 0.45);
+    }
+    .ctrl-btn-action.btn-truck .ctrl-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #1C1C1C;
+    }
+
+    /* 2. DEST: Emerald Green */
+    .ctrl-btn-action.btn-dest {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
+      border: 1.5px solid #047857;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+    }
+    .ctrl-btn-action.btn-dest .ctrl-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FFFFFF;
+    }
+
+    /* 3. ROUTE: Dark Charcoal / Slate */
+    .ctrl-btn-action.btn-route {
+      background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+      color: #FFFFFF;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+    .ctrl-btn-action.btn-route .ctrl-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FFCC29;
     }
 
     /* Bottom Sheet Container (DoorDash / Uber style) */
@@ -719,16 +764,24 @@
     </div>
   </header>
 
-  <!-- Modern Floating Map Controls (Typographic Dock - No Icons) -->
+  <!-- Modern Floating Map Controls -->
   <div class="map-controls">
     <div class="zoom-group">
       <button class="ctrl-btn-zoom" id="btnZoomIn" title="Zoom in">＋</button>
       <div class="zoom-divider"></div>
       <button class="ctrl-btn-zoom" id="btnZoomOut" title="Zoom out">－</button>
     </div>
-    <button class="ctrl-btn-pill" id="btnRecenter" title="Center on truck">TRUCK</button>
-    <button class="ctrl-btn-pill" id="btnDest" title="Center on destination">DEST</button>
-    <button class="ctrl-btn-pill" id="btnFitBounds" title="View full route">ROUTE</button>
+    <div class="ctrl-actions-group">
+      <button class="ctrl-btn-action btn-truck" id="btnRecenter" title="Center on truck">
+        <span class="ctrl-dot"></span>TRUCK
+      </button>
+      <button class="ctrl-btn-action btn-dest" id="btnDest" title="Center on destination">
+        <span class="ctrl-dot"></span>DEST
+      </button>
+      <button class="ctrl-btn-action btn-route" id="btnFitBounds" title="View full route">
+        <span class="ctrl-dot"></span>ROUTE
+      </button>
+    </div>
   </div>
 
   <!-- Bottom Sheet / Side Panel (DoorDash / Uber style) -->
