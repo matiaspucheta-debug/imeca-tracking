@@ -619,6 +619,18 @@
       transform: scale(0.93);
     }
 
+    .driver-hint {
+      font-size: 10.5px;
+      color: var(--muted-text);
+      line-height: 1.35;
+      padding: 0 4px;
+      margin-top: -4px;
+    }
+
+    .driver-hint strong {
+      color: var(--charcoal);
+    }
+
     /* Destination Details Card (Clean Minimalist - No Icons) */
     .destination-card {
       background: #FAFAFA;
@@ -839,9 +851,12 @@
           </div>
         </div>
         <div class="driver-actions">
-          <a href="tel:5618484343" class="driver-btn call" id="btnCallDriver">CALL</a>
-          <a href="sms:5618484343" class="driver-btn sms" id="btnSmsDriver">SMS</a>
+          <a href="tel:5618484343" class="driver-btn call" id="btnCallDriver" title="Call driver tablet">CALL</a>
+          <a href="sms:5618484343" class="driver-btn sms" id="btnSmsDriver" title="Text instructions to tablet">SMS</a>
         </div>
+      </div>
+      <div class="driver-hint">
+        Tap <strong>SMS</strong> to text instructions (gate code, where to leave items) directly to the driver's tablet.
       </div>
 
       <!-- Destination & Dropoff Notes (No Icons) -->
@@ -903,8 +918,16 @@
     document.getElementById('driverNameDisplay').innerText = driverName;
     document.getElementById('driverVehicleDisplay').innerText = truckNumber + ' • Imeca Fleet';
     document.getElementById('driverAvatar').innerText = getInitials(driverName);
+    
+    // Call: opens phone dialer directly to tablet in truck
     document.getElementById('btnCallDriver').href = 'tel:' + driverPhone;
-    document.getElementById('btnSmsDriver').href = 'sms:' + driverPhone;
+
+    // SMS: opens native SMS messenger with tablet's number and pre-filled order context
+    const smsSubject = `Hi ${driverName}, regarding my delivery #${orderId}: `;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const smsSep = isIOS ? '&' : '?';
+    document.getElementById('btnSmsDriver').href = `sms:${driverPhone}${smsSep}body=${encodeURIComponent(smsSubject)}`;
+
     document.getElementById('chipPackages').innerText = `${packagesCount} pkg${packagesCount > 1 ? 's' : ''}`;
     document.getElementById('chipDropoff').innerText = dropoffType;
 
